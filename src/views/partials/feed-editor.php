@@ -6,11 +6,11 @@
 
             <div class="feed-new-avatar">
 
-                <img src="media/avatars/avatar.jpg" />
-                
+                <img src="<?=$base;?>/media/avatars/<?=$user->avatar;?>"/>
+
             </div>
 
-            <div class="feed-new-input-placeholder">O que você está pensando, Bonieky?</div>
+            <div class="feed-new-input-placeholder">O que você está pensando, <?=$user->name;?>?</div>
 
             <div class="feed-new-input" contenteditable="true"></div>
 
@@ -20,8 +20,35 @@
 
             </div>
 
+            <form class="feed-new-form" method="POST" action="<?=$base;?>/post/new">
+
+                <input type="hidden" name="body" />
+
+            </form>
+
         </div>
 
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    let feedInput = document.querySelector('.feed-new-input');
+    let feedSubmit = document.querySelector('.feed-new-send');
+    let feedForm = document.querySelector('.feed-new-form');
+
+    feedSubmit.addEventListener('click', function() {
+
+        let value = feedInput.innerText.trim();
+
+        if(value != '') {
+
+            feedForm.querySelector('input[name=body]').value = value;
+            feedForm.submit();
+
+        }
+    });
+
+   
+</script>
