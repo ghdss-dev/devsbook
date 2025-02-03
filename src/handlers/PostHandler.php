@@ -26,7 +26,9 @@ class PostHandler {
         }
     }
 
-    public static function getHomeFeed($idUser) {
+    public static function getHomeFeed($idUser, $page) {
+
+        $perPage = 2;
 
         // 1. Pegar lista de usuários que EU sigo.
 
@@ -45,7 +47,14 @@ class PostHandler {
         $postList = Post::select()
             ->where('id_user', 'in', $users)
             ->orderBy('created_at', 'desc')
+            ->page($page, $perPage)
         ->get();
+
+        $total = Post::select()
+            ->where('id_user', 'in', $users) 
+        ->count();
+
+        $pageCount = ceil($total / $perPage);
 
         // 3. transformar o resultado em objetos dos models 
         $posts = []; 
@@ -57,6 +66,12 @@ class PostHandler {
             $newPost->type = $postItem['type'];
             $newPost->created_at = $postItem['created_at'];
             $newPost->body = $postItem['body'];
+            $newPost->mine = false;
+
+            if($postItem['id_user'] == $idUser) {
+
+                $newPost->mine = true;
+            }
 
             // 4. preencher as informações adicionais no post
             $newUser = User::select()->where('id', $postItem['id_user'])->one();
@@ -66,13 +81,21 @@ class PostHandler {
             $newPost->user->avatar = $newUser['avatar'];
 
             // TODO: 4.1 preencher informações de LIKE
+            $newPost->likeCount = 0;
+            $newPost->liked = false;
             // TODO: 4.2 preencher informações de COMMENTS
+            $newPost->comments = [];
 
             $posts[] = $newPost;
         }
 
         // 5. retornar o resultado. 
-        return $posts;
+        return [
+
+            'posts' => $posts, 
+            'pageCount' => $pageCount,
+            'currentPage' => $page
+        ];
 
     }
 }
