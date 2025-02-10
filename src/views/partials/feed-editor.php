@@ -16,7 +16,7 @@
 
             <div class="feed-new-send">
 
-                <img src="assets/images/send.png" />
+                <img src="<?=$base; ?>/assets/images/send.png" />
 
             </div>
 
