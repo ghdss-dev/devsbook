@@ -109,4 +109,10 @@ class LoginController extends Controller {
             $this->redirect('/cadastro');
         }
     }
+
+    public function logout() {
+
+        $_SESSION['token'] = '';
+        $this->redirect('/login');
+    }
 }
