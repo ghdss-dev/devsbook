@@ -127,6 +127,45 @@ class ProfileController extends Controller {
             'isFollowing' => $isFollowing
         ]);
     }
+
+    public function photos($atts = []) {
+
+        // Detectando o usuário acessado
+        $id = $this->loggedUser->id;
+        if(!empty($atts['id'])) {
+            $id = $atts['id'];
+        } 
+   
+        // Pegando informações do usuário 
+        $user = UserHandler::getUser($id, true);
+   
+        if(!$user) {
+            $this->redirect('/');
+        }
+   
+        // Pegando o feed do usuário
+        $dateFrom = new \DateTime($user->birthdate);
+        $dateTo = new \DateTime('today');
+        $user->ageYears = $dateFrom->diff($dateTo)->y;
+   
+        // Pegando o feed do usuário
+        $page = intval(filter_input(INPUT_GET, 'page'));
+        $feed = PostHandler::getUserFeed($id, $page, $this->loggedUser->id);
+   
+        // Verificar se EU sigo o usuário
+        $isFollowing = false;
+        if($user->id != $this->loggedUser->id) {
+            $isFollowing = UserHandler::isFollowing($this->loggedUser->id, $user->id);
+        }
+   
+        $this->render('profile_photos', [
+            
+            'loggedUser' => $this->loggedUser,
+            'user' => $user,
+            'feed' => $feed, 
+            'isFollowing' => $isFollowing
+        ]);
+    }
    
 
 }
