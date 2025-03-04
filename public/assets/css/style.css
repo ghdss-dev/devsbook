@@ -394,6 +394,11 @@ header .head-side {
     text-align: center;
 }
 
+.profile-info-item a {
+
+    text-decoration: none;
+}
+
 .profile-info-item-n {
 
     font-weight: bold;
@@ -565,6 +570,30 @@ header .head-side {
 
 .button:hover {
     background-color:#477dbb;
+}
+
+.config-form{
+
+    margin-top: 10px; 
+}
+
+.config-form label{
+
+    display: block;
+    padding: 10px 0;
+}
+
+.config-form input{
+
+    padding: 10px 15px;
+    font-size: 14px; 
+    width: 100%; 
+    max-width: 500px;
+}
+
+.config-form .image-edit {
+
+    max-width: 150px;
 }
 
 

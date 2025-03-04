@@ -82,6 +82,7 @@ class UserHandler {
             $user = new User();
             $user->id = $data['id'];
             $user->name = $data['name'];
+            $user->email = $data['email'];
             $user->birthdate = $data['birthdate'];
             $user->city = $data['city'];
             $user->work = $data['work']; 
@@ -183,5 +184,48 @@ class UserHandler {
             ->where('user_to', $to) 
             
         ->execute();
+    }
+
+    public static function searchUser($term) {
+
+        $users = [];
+
+        $data = User::select()->where('name', 'like', '%'.$term.'%')->get();
+
+        if($data) {
+
+            foreach($data as $user) {
+
+                $newUser = new User(); 
+                $newUser->id = $user['id']; 
+                $newUser->name = $user['name']; 
+                $newUser->avatar = $user['avatar'];
+
+                $users[] = $newUser;
+            }
+        }
+
+        return $users;
+    }
+
+    public static function updateUser($fields, $idUser) {
+
+        if(count($fields) > 0) {
+
+            $update = User::update(); 
+
+            foreach($fields as $fieldName => $fieldValue) {
+
+                if($fieldName == 'password') {
+
+                    $fieldValue = password_hash($fieldValue, PASSWORD_DEFAULT);
+
+                }
+
+                $update->set($fieldName, $fieldValue); 
+            }
+
+            $update->where('id', $idUser)->execute();
+        }
     }
 }

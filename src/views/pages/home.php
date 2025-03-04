@@ -12,31 +12,31 @@
 
                 <?=$render('feed-editor', ['user'=>$loggedUser]);?>
 
-            </div>
+                <?php foreach($feed['posts'] as $feedItem): ?>
+                    <?=$render('feed-item', [
 
-                <div class="column side pl-5">
-                    <div class="box banners">
-                        <div class="box-header">
-                            <div class="box-header-text">Patrocinios</div>
-                            <div class="box-header-buttons">
-                                
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <a href=""><img src="https://alunos.b7web.com.br/media/courses/php-nivel-1.jpg" /></a>
-                            <a href=""><img src="https://alunos.b7web.com.br/media/courses/laravel-nivel-1.jpg" /></a>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="box-body m-10">
-                            Criado com ❤️ por B7Web
-                        </div>
-                    </div>
+                        'data' => $feedItem, 
+                        'loggedUser' => $loggedUser
+                    ]);?>
+                <?php endforeach;?>
+
+                <div class="feed-pagination"> 
+                    <?php for($q=0; $q <$feed['pageCount']; $q++): ?>
+                        <a class="<?=($q==$feed['currentPage']?'active':'')?>"></a>
+                    <?php endfor; ?>
                 </div>
 
             </div>
 
-        </section>
+                <div class="column side pl-5">
+                    <?=$render('right-side');?>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </section>
 <?=$render('footer');?>
