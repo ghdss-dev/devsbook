@@ -16,7 +16,7 @@ class UserHandler {
 
             $data = User::select()->where('token', $token)->one();
 
-            if(count($data) > 0) {
+            if ($data && is_array($data) && count($data) > 0) {
             
                 /*
                 $loggedUser = new User();

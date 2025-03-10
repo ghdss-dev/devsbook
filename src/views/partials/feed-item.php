@@ -1,4 +1,4 @@
-<div class="box feed-item">
+<div class="box feed-item" data-id="<?=$data->id;?>">
 
     <div class="box-body">
 
